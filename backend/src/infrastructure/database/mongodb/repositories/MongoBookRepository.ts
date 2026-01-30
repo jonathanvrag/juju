@@ -1,9 +1,9 @@
-import { Book } from '../../../domain/entities/Book';
+import { Book } from '../../../../domain/entities/Book';
 import {
   IBookRepository,
   ListBooksQuery,
   PaginatedResult,
-} from '../../../domain/repositories/IBookRepository';
+} from '../../../../domain/repositories/IBookRepository';
 import { BookModel } from '../models/BookModel';
 
 export class MongoBookRepository implements IBookRepository {

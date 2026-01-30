@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { Book } from '../../../domain/entities/Book';
+import { Book } from '../../../../domain/entities/Book';
 
 export interface BookDocument extends Omit<Book, 'id'>, Document {}
 
