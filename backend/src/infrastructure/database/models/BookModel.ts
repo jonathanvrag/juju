@@ -27,6 +27,10 @@ const bookSchema = new Schema<BookDocument>(
       default: 'available',
       required: true,
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -37,5 +41,6 @@ const bookSchema = new Schema<BookDocument>(
 bookSchema.index({ title: 1 });
 bookSchema.index({ author: 1 });
 bookSchema.index({ status: 1 });
+bookSchema.index({ deletedAt: 1 });
 
-export const bookModel = mongoose.model<BookDocument>('Book', bookSchema);
+export const BookModel = mongoose.model<BookDocument>('Book', bookSchema);

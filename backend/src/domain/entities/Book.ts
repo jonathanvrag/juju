@@ -6,4 +6,5 @@ export interface Book {
   status: 'available' | 'reserved';
   createdAt?: Date;
   updatedAt?: Date;
+  deletedAt?: Date;
 }
