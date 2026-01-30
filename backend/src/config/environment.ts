@@ -10,7 +10,7 @@ export const config = {
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'default-secret',
-    expiration: process.env.JWT_EXPIRATION || '24h',
+    expiration: process.env.JWT_EXPIRATION || ('24h' as string | number),
   },
   bcrypt: {
     rounds: parseInt(process.env.BCRYPT_ROUNDS || '10', 10),
