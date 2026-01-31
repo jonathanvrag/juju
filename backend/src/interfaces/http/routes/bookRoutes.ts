@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { BookController } from '../http/controllers/BookController';
-import { authMiddleware } from '../http/middlewares/authMiddleware';
-import { validate } from '../http/middlewares/validationMiddleware';
+import { BookController } from '../../http/controllers/BookController';
+import { authMiddleware } from '../../http/middlewares/authMiddleware';
+import { validate } from '../../http/middlewares/validationMiddleware';
 import {
   createBookSchema,
   updateBookSchema,
   listBooksSchema,
-} from '../http/validators/bookValidators';
+} from '../../http/validators/bookValidators';
 
 const router = Router();
 const bookController = new BookController();
