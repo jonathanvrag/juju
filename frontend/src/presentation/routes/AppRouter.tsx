@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage, RegisterPage, BooksPage } from '../pages';
 import { ProtectedRoute } from './ProtectedRoute';
+import { BookDetailPage } from '../pages/BookDetailPage';
+import { BookFormPage } from '../pages/Books/BookFormPage';
 
 export function AppRouter() {
   return (
@@ -14,6 +16,33 @@ export function AppRouter() {
           element={
             <ProtectedRoute>
               <BooksPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/books/new'
+          element={
+            <ProtectedRoute>
+              <BookFormPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/books/:id/edit'
+          element={
+            <ProtectedRoute>
+              <BookFormPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/books/:id'
+          element={
+            <ProtectedRoute>
+              <BookDetailPage />
             </ProtectedRoute>
           }
         />

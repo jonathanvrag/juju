@@ -1,12 +1,12 @@
-import type { Book } from '../entities';
+import type { Book } from '../entities/Book';
 
 export interface BookFilters {
   page?: number;
   limit?: number;
-  status?: string;
-  genre?: string;
-  author?: string;
   search?: string;
+  status?: 'available' | 'reserved' | 'loaned';
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
 export interface PaginatedBooks {
@@ -29,13 +29,13 @@ export interface UpdateBookData {
   title?: string;
   author?: string;
   publicationYear?: number;
-  status?: string;
+  status?: 'available' | 'reserved' | 'loaned';
 }
 
 export interface IBookRepository {
   getAll(filters: BookFilters): Promise<PaginatedBooks>;
   getById(id: string): Promise<Book>;
-  create(data: CreateBookData): Promise<Book>;
-  update(id: string, data: UpdateBookData): Promise<Book>;
+  create(bookData: CreateBookData): Promise<Book>;
+  update(id: string, bookData: UpdateBookData): Promise<Book>;
   delete(id: string): Promise<void>;
 }

@@ -3,6 +3,7 @@ import { Search, Plus } from 'lucide-react';
 import { useBookStore } from '../../application/stores';
 import { Navbar, Loading, EmptyState } from '../components/common';
 import { BookCard, Pagination } from '../components/books';
+import { Link } from 'react-router-dom';
 
 export function BooksPage() {
   const { books, pagination, isLoading, fetchBooks } = useBookStore();
@@ -19,7 +20,7 @@ export function BooksPage() {
       page: 1,
       limit: 9,
       search,
-      status: statusFilter || undefined,
+      status: statusFilter as 'available' | 'reserved' | 'loaned' | undefined,
     });
   };
 
@@ -28,7 +29,7 @@ export function BooksPage() {
       page,
       limit: 9,
       search: search || undefined,
-      status: statusFilter || undefined,
+      status: statusFilter as 'available' | 'reserved' | 'loaned' | undefined,
     });
   };
 
@@ -47,10 +48,12 @@ export function BooksPage() {
               {pagination.total} libros disponibles
             </p>
           </div>
-          <button className='btn-primary flex items-center space-x-2'>
+          <Link
+            to='/books/new'
+            className='btn-primary flex items-center space-x-2'>
             <Plus className='h-5 w-5' />
             <span>Agregar Libro</span>
-          </button>
+          </Link>
         </div>
 
         {/* Filtros */}
