@@ -1,10 +1,30 @@
+import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { AppRouter } from './presentation/routes/AppRouter';
+import { useAuthStore } from './application/stores';
+
 function App() {
+  const checkAuth = useAuthStore(state => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   return (
-    <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
-      <h1 className='text-4xl font-bold text-gray-900'>
-        Book Management System
-      </h1>
-    </div>
+    <>
+      <AppRouter />
+      <Toaster
+        position='top-right'
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#1f2937',
+            color: '#f9fafb',
+            border: '1px solid #374151',
+          },
+        }}
+      />
+    </>
   );
 }
 
