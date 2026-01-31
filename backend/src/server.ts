@@ -4,6 +4,7 @@ import { App } from './app';
 import { MongoDBConnection } from './infrastructure/database/mongodb/connection';
 import { Logger } from './infrastructure/logging/Logger';
 import { config } from './config/environment';
+import { ReservationExpirationJob } from './infrastructure/cron/ReservationExpirationJob';
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ const startServer = async () => {
       Logger.info(`[Server] Environment: ${config.env}`);
       Logger.info(`[Server] Health check: http://localhost:${PORT}/health`);
       Logger.info(`[Server] API: http://localhost:${PORT}/api`);
+
+      const reservationJob = new ReservationExpirationJob();
+      reservationJob.start();
     });
 
     process.on('SIGTERM', async () => {
