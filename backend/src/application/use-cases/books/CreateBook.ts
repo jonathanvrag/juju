@@ -1,6 +1,6 @@
 import { Book } from '../../../domain/entities/Book';
 import { IBookRepository } from '../../../domain/repositories/IBookRepository';
-import { CreateBookDto } from '../../dto/CreateBookDto';
+import { CreateBookDto } from '../../dtos/CreateBookDto';
 import { ValidationError } from '../../../shared/errors/ValidationError';
 
 export class CreateBook {

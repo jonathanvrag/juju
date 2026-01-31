@@ -1,6 +1,6 @@
 import { User } from '../../../domain/entities/User';
 import { IUserRepository } from '../../../domain/repositories/IUserRepository';
-import { RegisterUserDto } from '../../dto/RegisterUserDto';
+import { RegisterUserDto } from '../../dtos/RegisterUserDto';
 import { ValidationError } from '../../../shared/errors/ValidationError';
 
 export class RegisterUser {

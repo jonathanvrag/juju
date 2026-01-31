@@ -1,6 +1,6 @@
 import { IUserRepository } from '../../../domain/repositories/IUserRepository';
-import { AuthResponseDto } from '../../dto/AuthResponseDto';
-import { LoginDto } from '../../dto/LoginDto';
+import { AuthResponseDto } from '../../dtos/AuthResponseDto';
+import { LoginDto } from '../../dtos/LoginDto';
 import { UnauthorizedError } from '../../../shared/errors/UnauthorizedError';
 
 export class Login {

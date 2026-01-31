@@ -1,7 +1,7 @@
 import { Loan } from '../../../domain/entities/Loan';
 import { ILoanRepository } from '../../../domain/repositories/ILoanRepository';
 import { IBookRepository } from '../../../domain/repositories/IBookRepository';
-import { CreateLoanDto } from '../../dto/CreateLoanDto';
+import { CreateLoanDto } from '../../dtos/CreateLoanDto';
 import { ValidationError } from '../../../shared/errors/ValidationError';
 import { NotFoundError } from '../../../shared/errors/NotFoundError';
 

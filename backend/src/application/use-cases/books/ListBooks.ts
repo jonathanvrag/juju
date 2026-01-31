@@ -3,7 +3,7 @@ import {
   PaginatedResult,
 } from '../../../domain/repositories/IBookRepository';
 import { Book } from '../../../domain/entities/Book';
-import { ListBooksQueryDto } from '../../dto/ListBooksQueryDto';
+import { ListBooksQueryDto } from '../../dtos/ListBooksQueryDto';
 
 export class ListBooks {
   constructor(private bookReporsitory: IBookRepository) {}
