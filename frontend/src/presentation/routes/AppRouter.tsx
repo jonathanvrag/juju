@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage, RegisterPage, BooksPage } from '../pages';
 import { ProtectedRoute } from './ProtectedRoute';
-import { BookDetailPage } from '../pages/BookDetailPage';
+import { BookDetailPage } from '../pages/Books/BookDetailPage';
 import { BookFormPage } from '../pages/Books/BookFormPage';
+import { MyReservationsPage } from '../pages/MyReservationsPage';
 
 export function AppRouter() {
   return (
@@ -46,6 +47,8 @@ export function AppRouter() {
             </ProtectedRoute>
           }
         />
+
+        <Route path='/my-reservations' element={<MyReservationsPage />} />
 
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>

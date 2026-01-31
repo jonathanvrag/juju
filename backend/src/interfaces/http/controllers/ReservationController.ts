@@ -15,6 +15,13 @@ export class ReservationController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      if (!req.user || !req.user.userId) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Usuario no autenticado',
+        });
+      }
+
       const createReservation = new CreateReservation(
         this.reservationRepository,
         this.bookRepository
@@ -22,13 +29,13 @@ export class ReservationController {
 
       const dto = {
         ...req.body,
-        userId: req.user?.userId,
+        userId: req.user.userId,
       };
 
       const reservation = await createReservation.execute(dto);
 
       Logger.info(
-        `[Reservations] Reservation created for book ${reservation.bookId} by user ${req.user?.userId}`
+        `[Reservations] Reservation created for book ${reservation.bookId} by user ${req.user.userId}`
       );
 
       res.status(201).json({
@@ -42,13 +49,20 @@ export class ReservationController {
 
   async cancel(req: Request, res: Response, next: NextFunction) {
     try {
+      if (!req.user || !req.user.userId) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Usuario no autenticado',
+        });
+      }
+
       const cancelReservation = new CancelReservation(
         this.reservationRepository,
         this.bookRepository
       );
 
       const reservationId = req.params.id as string;
-      const userId = req.user?.userId!;
+      const userId = req.user.userId;
 
       const reservation = await cancelReservation.execute(
         reservationId,
@@ -70,6 +84,13 @@ export class ReservationController {
 
   async fulfill(req: Request, res: Response, next: NextFunction) {
     try {
+      if (!req.user || !req.user.userId) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Usuario no autenticado',
+        });
+      }
+
       const fulfillReservation = new FulfillReservation(
         this.reservationRepository,
         this.loanRepository,
@@ -77,7 +98,7 @@ export class ReservationController {
       );
 
       const reservationId = req.params.id as string;
-      const userId = req.user?.userId!;
+      const userId = req.user.userId;
       const { loanDueDate } = req.body;
 
       const loan = await fulfillReservation.execute(
@@ -101,11 +122,18 @@ export class ReservationController {
 
   async getUserReservations(req: Request, res: Response, next: NextFunction) {
     try {
+      if (!req.user || !req.user.userId) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Usuario no autenticado',
+        });
+      }
+
       const getUserReservations = new GetUserReservations(
         this.reservationRepository
       );
 
-      const reservations = await getUserReservations.execute(req.user?.userId!);
+      const reservations = await getUserReservations.execute(req.user.userId);
 
       res.status(200).json({
         status: 'success',

@@ -2,11 +2,11 @@ import type { Loan, Reservation } from '../entities';
 
 export interface CreateReservationData {
   bookId: string;
-  expirationDate: Date;
+  expirationDate: string;
 }
 
 export interface FulfillReservationData {
-  loanDueDate: Date;
+  loanDueDate: string;
 }
 
 export interface IReservationRepository {

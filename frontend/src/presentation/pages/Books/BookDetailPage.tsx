@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -8,9 +8,10 @@ import {
   Trash2,
   BookOpen,
 } from 'lucide-react';
-import { useBookStore } from '../../application/stores';
-import { useToast } from '../../hooks/useToast';
-import { Navbar, Loading } from '../components/common';
+import { useBookStore } from '../../../application/stores';
+import { useToast } from '../../../hooks/useToast';
+import { Navbar, Loading } from '../../components/common';
+import { ReservationModal } from '../../components/reservations/ReservationModal';
 
 const statusConfig = {
   available: { label: 'Disponible', class: 'badge-available' },
@@ -22,6 +23,7 @@ export function BookDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const toast = useToast();
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
 
   const {
     selectedBook,
@@ -104,7 +106,6 @@ export function BookDetailPage() {
             Volver al catálogo
           </Link>
         </div>
-
         {/* Card principal */}
         <div className='card'>
           <div className='flex justify-between items-start mb-6'>
@@ -150,7 +151,11 @@ export function BookDetailPage() {
           {/* Acciones */}
           <div className='flex gap-4 pt-6 border-t border-gray-700'>
             {selectedBook.status === 'available' && (
-              <button className='btn-primary flex-1'>Reservar Libro</button>
+              <button
+                onClick={() => setIsReservationModalOpen(true)}
+                className='btn-primary flex-1'>
+                Reservar Libro
+              </button>
             )}
 
             <Link
@@ -167,8 +172,7 @@ export function BookDetailPage() {
               Eliminar
             </button>
           </div>
-        </div>
-
+        </div>{' '}
         {/* Información adicional */}
         <div className='card mt-6'>
           <h2 className='text-xl font-semibold text-gray-100 mb-4'>
@@ -195,6 +199,16 @@ export function BookDetailPage() {
             </p>
           </div>
         </div>
+        {/* Modal de reserva */}
+        <ReservationModal
+          isOpen={isReservationModalOpen}
+          onClose={() => setIsReservationModalOpen(false)}
+          bookId={selectedBook.id}
+          bookTitle={selectedBook.title}
+          onSuccess={() => {
+            fetchBookById(selectedBook.id);
+          }}
+        />
       </div>
     </div>
   );

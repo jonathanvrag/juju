@@ -1,6 +1,8 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import { AxiosError } from 'axios';
 import { config } from '../../config/env';
+import { TokenStorage } from '../storage';
 
 class ApiClient {
   private client: AxiosInstance;
@@ -15,10 +17,12 @@ class ApiClient {
 
     this.client.interceptors.request.use(
       axiosConfig => {
-        const token = localStorage.getItem(config.tokenKey);
+        const token = TokenStorage.get();
+
         if (token) {
           axiosConfig.headers.Authorization = `Bearer ${token}`;
         }
+
         return axiosConfig;
       },
       error => Promise.reject(error)
@@ -28,7 +32,7 @@ class ApiClient {
       response => response,
       (error: AxiosError) => {
         if (error.response?.status === 401) {
-          localStorage.removeItem(config.tokenKey);
+          TokenStorage.remove();
           window.location.href = '/login';
         }
         return Promise.reject(error);
