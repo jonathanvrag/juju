@@ -47,16 +47,21 @@ export class MongoBookRepository implements IBookRepository {
 
     const skip = (page - 1) * limit;
 
-    const [books, total] = await Promise.all([
+    const [bookDocs, total] = await Promise.all([
       BookModel.find(filter).sort(sort).skip(skip).limit(limit),
       BookModel.countDocuments(filter),
     ]);
 
+    const pages = Math.ceil(total / limit);
+
     return {
-      data: books.map(book => this.toEntity(book)),
-      total,
-      page,
-      totalPages: Math.ceil(total / limit),
+      books: bookDocs.map(book => this.toEntity(book)),
+      pagination: {
+        total,
+        page,
+        limit,
+        pages,
+      },
     };
   }
 
@@ -91,7 +96,7 @@ export class MongoBookRepository implements IBookRepository {
   private toEntity(bookDoc: any): Book {
     return {
       id: bookDoc._id.toString(),
-      title: bookDoc.author,
+      title: bookDoc.title,
       author: bookDoc.author,
       publicationYear: bookDoc.publicationYear,
       status: bookDoc.status,

@@ -10,10 +10,13 @@ export interface ListBooksQuery {
 }
 
 export interface PaginatedResult<T> {
-  data: T[];
-  total: number;
-  page: number;
-  totalPages: number;
+  books: T[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  };
 }
 
 export interface IBookRepository {

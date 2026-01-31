@@ -4,10 +4,9 @@ export interface Book {
   id: string;
   title: string;
   author: string;
-  isbn: string;
-  publishedYear: number;
-  genre: string;
+  publicationYear: number;
   status: BookStatus;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date | null;
 }

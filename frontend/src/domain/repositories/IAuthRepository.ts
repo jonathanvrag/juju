@@ -19,5 +19,4 @@ export interface AuthResponse {
 export interface IAuthRepository {
   login(credentials: LoginCredentials): Promise<AuthResponse>;
   register(data: RegisterData): Promise<AuthResponse>;
-  getCurrentUser(token: string): Promise<User>;
 }

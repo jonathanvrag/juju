@@ -14,7 +14,6 @@ interface AuthState {
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
-  checkAuth: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -73,31 +72,6 @@ export const useAuthStore = create<AuthState>(set => ({
       isAuthenticated: false,
       error: null,
     });
-  },
-
-  checkAuth: async () => {
-    const token = TokenStorage.get();
-    if (!token) {
-      set({ isAuthenticated: false, user: null });
-      return;
-    }
-
-    set({ isLoading: true });
-    try {
-      const user = await authApi.getCurrentUser(token);
-      set({
-        user,
-        isAuthenticated: true,
-        isLoading: false,
-      });
-    } catch {
-      TokenStorage.remove();
-      set({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-      });
-    }
   },
 
   clearError: () => set({ error: null }),

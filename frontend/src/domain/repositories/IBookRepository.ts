@@ -22,17 +22,13 @@ export interface PaginatedBooks {
 export interface CreateBookData {
   title: string;
   author: string;
-  isbn: string;
-  publishedYear: number;
-  genre: string;
+  publicationYear: number;
 }
 
 export interface UpdateBookData {
   title?: string;
   author?: string;
-  isbn?: string;
-  publishedYear?: number;
-  genre?: string;
+  publicationYear?: number;
   status?: string;
 }
 

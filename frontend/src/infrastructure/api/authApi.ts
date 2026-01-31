@@ -5,7 +5,6 @@ import type {
   RegisterData,
   AuthResponse,
 } from '../../domain/repositories';
-import type { User } from '../../domain/entities';
 
 export class AuthApi implements IAuthRepository {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
@@ -22,12 +21,5 @@ export class AuthApi implements IAuthRepository {
       user: data.data.user,
       token: data.data.token,
     };
-  }
-
-  async getCurrentUser(token: string): Promise<User> {
-    const { data } = await apiClient.get('/auth/me', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return data.data.user;
   }
 }
