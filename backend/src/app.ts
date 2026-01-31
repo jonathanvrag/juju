@@ -5,6 +5,8 @@ import rateLimit from 'express-rate-limit';
 import routes from './interfaces/http/routes';
 import { errorHandler } from './interfaces/http/middlewares/errorHandler';
 import { Logger } from './infrastructure/logging/Logger';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './infrastructure/swagger/swaggerConfig';
 
 export class App {
   public app: Application;
@@ -50,6 +52,15 @@ export class App {
         timestamp: new Date().toISOString(),
       });
     });
+
+    this.app.use(
+      '/api-docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpec, {
+        customCss: '.swagger-ui .topbar { display: none }',
+        customSiteTitle: 'Book Management API Docs',
+      })
+    );
 
     this.app.use('/api', routes);
 
