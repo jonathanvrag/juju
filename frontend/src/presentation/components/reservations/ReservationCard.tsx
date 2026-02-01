@@ -1,13 +1,17 @@
 import { ReservationStatus } from '../../../domain/entities/Reservation';
 import type { Reservation } from '../../../domain/entities/Reservation';
 import { useReservationStore } from '../../../application/stores';
+import { useState } from 'react';
+import { ConfirmationModal } from '../common/ConfirmationModal';
 
 interface ReservationCardProps {
   reservation: Reservation;
 }
 
 export const ReservationCard = ({ reservation }: ReservationCardProps) => {
-  const { cancelReservation, fetchUserReservations } = useReservationStore();
+  const { cancelReservation, fulfillReservation, fetchUserReservations } = useReservationStore();
+  const [cancelConfirmOpen, setCancelConfirmOpen] = useState(false);
+  const [fulfillConfirmOpen, setFulfillConfirmOpen] = useState(false);
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('es-ES', {
@@ -20,6 +24,7 @@ export const ReservationCard = ({ reservation }: ReservationCardProps) => {
   const getStatusBadge = (status: ReservationStatus) => {
     const styles: Record<ReservationStatus, string> = {
       pending: 'bg-yellow-100 text-yellow-800',
+      active: 'bg-blue-100 text-blue-800',
       fulfilled: 'bg-green-100 text-green-800',
       cancelled: 'bg-red-100 text-red-800',
       expired: 'bg-gray-100 text-gray-800',
@@ -27,6 +32,7 @@ export const ReservationCard = ({ reservation }: ReservationCardProps) => {
 
     const labels: Record<ReservationStatus, string> = {
       pending: 'Pendiente',
+      active: 'Activa',
       fulfilled: 'Cumplida',
       cancelled: 'Cancelada',
       expired: 'Expirada',
@@ -41,16 +47,28 @@ export const ReservationCard = ({ reservation }: ReservationCardProps) => {
   };
 
   const handleCancel = async () => {
-    if (!window.confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
-      return;
-    }
-
     try {
       await cancelReservation(reservation.id);
       await fetchUserReservations();
     } catch (error) {
       console.error('Error al cancelar la reserva:', error);
       alert('No se pudo cancelar la reserva. Intenta de nuevo.');
+    }
+  };
+
+
+  const handleFulfill = async () => {
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 15); // 15 days loan duration
+
+    try {
+      await fulfillReservation(reservation.id, {
+        loanDueDate: dueDate.toISOString(),
+      });
+      await fetchUserReservations();
+    } catch (error) {
+      console.error('Error al cumplir la reserva:', error);
+      alert('No se pudo cumplir la reserva.');
     }
   };
 
@@ -81,14 +99,41 @@ export const ReservationCard = ({ reservation }: ReservationCardProps) => {
       )}
 
       <div className='flex gap-2 mt-4'>
-        {reservation.status === ReservationStatus.PENDING && (
-          <button
-            className='flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors text-sm font-medium'
-            onClick={handleCancel}>
-            Cancelar Reserva
-          </button>
+        {(reservation.status === ReservationStatus.PENDING || 
+          reservation.status === ReservationStatus.ACTIVE) && (
+          <>
+            <button
+              className='flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium'
+              onClick={() => setFulfillConfirmOpen(true)}>
+              Cumplir Reserva
+            </button>
+            <button
+              className='flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors text-sm font-medium'
+              onClick={() => setCancelConfirmOpen(true)}>
+              Cancelar
+            </button>
+          </>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={fulfillConfirmOpen}
+        onClose={() => setFulfillConfirmOpen(false)}
+        onConfirm={handleFulfill}
+        title='Cumplir Reserva'
+        message='¿Estás seguro de que deseas cumplir esta reserva y crear un préstamo?'
+        confirmText='Crear Préstamo'
+      />
+
+      <ConfirmationModal
+        isOpen={cancelConfirmOpen}
+        onClose={() => setCancelConfirmOpen(false)}
+        onConfirm={handleCancel}
+        title='Cancelar Reserva'
+        message='¿Estás seguro de que deseas cancelar esta reserva?'
+        confirmText='Cancelar Reserva'
+        isDanger
+      />
     </div>
   );
 };

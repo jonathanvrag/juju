@@ -4,6 +4,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { BookDetailPage } from '../pages/Books/BookDetailPage';
 import { BookFormPage } from '../pages/Books/BookFormPage';
 import { MyReservationsPage } from '../pages/MyReservationsPage';
+import { MyLoansPage } from '../pages/MyLoansPage';
 
 export function AppRouter() {
   return (
@@ -49,6 +50,7 @@ export function AppRouter() {
         />
 
         <Route path='/my-reservations' element={<MyReservationsPage />} />
+        <Route path='/my-loans' element={<MyLoansPage />} />
 
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>

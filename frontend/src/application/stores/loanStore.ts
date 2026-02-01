@@ -40,7 +40,8 @@ export const useLoanStore = create<LoanState>(set => ({
     set({ isLoading: true, error: null });
     try {
       await loanApi.create(data);
-      set({ isLoading: false });
+      const loans = await loanApi.getUserLoans();
+      set({ loans, isLoading: false });
     } catch (err) {
       const error = err as ApiError;
       set({
@@ -55,7 +56,8 @@ export const useLoanStore = create<LoanState>(set => ({
     set({ isLoading: true, error: null });
     try {
       await loanApi.returnBook(id);
-      set({ isLoading: false });
+      const loans = await loanApi.getUserLoans();
+      set({ loans, isLoading: false });
     } catch (err) {
       const error = err as ApiError;
       set({

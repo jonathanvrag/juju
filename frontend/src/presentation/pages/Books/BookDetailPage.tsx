@@ -8,9 +8,10 @@ import {
   Trash2,
   BookOpen,
 } from 'lucide-react';
-import { useBookStore } from '../../../application/stores';
+import { useBookStore, useLoanStore } from '../../../application/stores';
 import { useToast } from '../../../hooks/useToast';
 import { Navbar, Loading } from '../../components/common';
+import { ConfirmationModal } from '../../components/common/ConfirmationModal';
 import { ReservationModal } from '../../components/reservations/ReservationModal';
 
 const statusConfig = {
@@ -24,6 +25,8 @@ export function BookDetailPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
+  const [loanConfirmOpen, setLoanConfirmOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const {
     selectedBook,
@@ -46,18 +49,33 @@ export function BookDetailPage() {
   const handleDelete = async () => {
     if (!id || !selectedBook) return;
 
-    const confirmed = window.confirm(
-      `¿Estás seguro de eliminar "${selectedBook.title}"?`
-    );
-
-    if (!confirmed) return;
-
     try {
       await deleteBook(id);
       toast.success('Libro eliminado exitosamente');
       navigate('/books');
     } catch {
       toast.error('Error al eliminar el libro');
+    }
+  };
+
+  const { createLoan } = useLoanStore();
+
+  const handleLoan = async () => {
+    if (!selectedBook) return;
+    
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 15);
+
+    try {
+      await createLoan({
+        bookId: selectedBook.id,
+        dueDate,
+      });
+      toast.success('Préstamo creado exitosamente');
+      fetchBookById(selectedBook.id);
+    } catch (error) {
+      console.error(error);
+      toast.error('Error al crear el préstamo');
     }
   };
 
@@ -151,11 +169,19 @@ export function BookDetailPage() {
           {/* Acciones */}
           <div className='flex gap-4 pt-6 border-t border-gray-700'>
             {selectedBook.status === 'available' && (
-              <button
-                onClick={() => setIsReservationModalOpen(true)}
-                className='btn-primary flex-1'>
-                Reservar Libro
-              </button>
+              <>
+                <button
+                  onClick={() => setLoanConfirmOpen(true)}
+                  className='btn-primary bg-green-600 hover:bg-green-700 flex-1 flex justify-center items-center'>
+                  <BookOpen className='h-4 w-4 mr-2' />
+                  Prestar Libro
+                </button>
+                <button
+                  onClick={() => setIsReservationModalOpen(true)}
+                  className='btn-primary flex-1'>
+                  Reservar Libro
+                </button>
+              </>
             )}
 
             <Link
@@ -166,7 +192,7 @@ export function BookDetailPage() {
             </Link>
 
             <button
-              onClick={handleDelete}
+              onClick={() => setDeleteConfirmOpen(true)}
               className='btn-danger flex items-center justify-center'>
               <Trash2 className='h-4 w-4 mr-2' />
               Eliminar
@@ -208,6 +234,25 @@ export function BookDetailPage() {
           onSuccess={() => {
             fetchBookById(selectedBook.id);
           }}
+        />
+
+        <ConfirmationModal
+          isOpen={loanConfirmOpen}
+          onClose={() => setLoanConfirmOpen(false)}
+          onConfirm={handleLoan}
+          title='Confirmar Préstamo'
+          message={`¿Estás seguro de que deseas prestar el libro "${selectedBook.title}"?`}
+          confirmText='Prestar Libro'
+        />
+
+        <ConfirmationModal
+          isOpen={deleteConfirmOpen}
+          onClose={() => setDeleteConfirmOpen(false)}
+          onConfirm={handleDelete}
+          title='Eliminar Libro'
+          message={`¿Estás seguro de que deseas eliminar el libro "${selectedBook.title}"? Esta acción no se puede deshacer.`}
+          confirmText='Eliminar'
+          isDanger
         />
       </div>
     </div>

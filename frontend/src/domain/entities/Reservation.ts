@@ -1,5 +1,6 @@
 export const ReservationStatus = {
   PENDING: 'pending',
+  ACTIVE: 'active',
   FULFILLED: 'fulfilled',
   CANCELLED: 'cancelled',
   EXPIRED: 'expired',

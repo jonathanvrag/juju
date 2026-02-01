@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { useReservationStore } from '../../application/stores';
-import { ReservationCard } from '../components/reservations/ReservationCard';
+import { useLoanStore } from '../../application/stores';
+import { LoanCard } from '../components/LoanCard';
 
-export const MyReservationsPage = () => {
-  const { reservations, isLoading, error, fetchUserReservations } =
-    useReservationStore();
+export const MyLoansPage = () => {
+  const { loans, isLoading, error, fetchUserLoans } = useLoanStore();
 
   useEffect(() => {
-    fetchUserReservations();
-  }, [fetchUserReservations]);
+    fetchUserLoans();
+  }, [fetchUserLoans]);
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -21,21 +20,21 @@ export const MyReservationsPage = () => {
           <ArrowLeft className='h-4 w-4 mr-2' />
           Volver al catálogo
         </Link>
-        <h1 className='text-3xl font-bold'>Mis Reservas</h1>
+        <h1 className='text-3xl font-bold'>Mis Préstamos</h1>
       </div>
 
       {isLoading ? (
         <div className='text-center py-12'>
-          <p className='text-gray-600'>Cargando reservas...</p>
+          <p className='text-gray-600'>Cargando préstamos...</p>
         </div>
       ) : error ? (
         <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
           <p className='text-red-600'>{error}</p>
         </div>
-      ) : reservations.length === 0 ? (
+      ) : loans.length === 0 ? (
         <div className='text-center py-12 bg-gray-50 rounded-lg'>
           <p className='text-gray-600 text-lg mb-4'>
-            No tienes reservas activas
+            No tienes préstamos activos
           </p>
           <a
             href='/books'
@@ -45,8 +44,8 @@ export const MyReservationsPage = () => {
         </div>
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {reservations.map(reservation => (
-            <ReservationCard key={reservation.id} reservation={reservation} />
+          {loans.map(loan => (
+            <LoanCard key={loan.id} loan={loan} />
           ))}
         </div>
       )}
