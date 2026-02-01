@@ -73,27 +73,27 @@ export const ReservationCard = ({ reservation }: ReservationCardProps) => {
   };
 
   return (
-    <div className='bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow'>
+    <div className='bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-700'>
       <div className='flex justify-between items-start mb-4'>
-        <h3 className='text-lg font-semibold text-gray-900'>
+        <h3 className='text-lg font-semibold text-gray-100'>
           {reservation.book?.title || 'Libro sin título'}
         </h3>
         {getStatusBadge(reservation.status)}
       </div>
 
-      <p className='text-sm text-gray-600 mb-2'>
-        <span className='font-medium'>Autor:</span>{' '}
+      <p className='text-sm text-gray-400 mb-2'>
+        <span className='font-medium text-gray-300'>Autor:</span>{' '}
         {reservation.book?.author || 'Desconocido'}
       </p>
 
-      <p className='text-sm text-gray-600 mb-4'>
-        <span className='font-medium'>Fecha de reserva:</span>{' '}
+      <p className='text-sm text-gray-400 mb-4'>
+        <span className='font-medium text-gray-300'>Fecha de reserva:</span>{' '}
         {formatDate(reservation.reservationDate)}
       </p>
 
       {reservation.expirationDate && (
-        <p className='text-sm text-gray-600 mb-4'>
-          <span className='font-medium'>Expira:</span>{' '}
+        <p className='text-sm text-gray-400 mb-4'>
+          <span className='font-medium text-gray-300'>Expira:</span>{' '}
           {formatDate(reservation.expirationDate)}
         </p>
       )}
@@ -103,7 +103,7 @@ export const ReservationCard = ({ reservation }: ReservationCardProps) => {
           reservation.status === ReservationStatus.ACTIVE) && (
           <>
             <button
-              className='flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium'
+              className='flex-1 bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors text-sm font-medium'
               onClick={() => setFulfillConfirmOpen(true)}>
               Cumplir Reserva
             </button>

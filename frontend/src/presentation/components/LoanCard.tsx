@@ -38,10 +38,10 @@ export const LoanCard = ({ loan }: Props) => {
   };
 
   return (
-    <div className='bg-white rounded-lg shadow-md p-6 transition-shadow hover:shadow-lg border border-gray-100'>
+    <div className='bg-gray-800 rounded-lg shadow-md p-6 transition-shadow hover:shadow-lg border border-gray-700'>
       <div className='flex justify-between items-start mb-4'>
         <div>
-          <h3 className='text-xl font-bold text-gray-800 mb-1'>Libro ID: {loan.bookId}</h3> 
+          <h3 className='text-xl font-bold text-gray-100 mb-1'>Libro ID: {loan.bookId}</h3> 
           <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[loan.status]}`}>
             {statusLabels[loan.status]}
           </span>
@@ -50,19 +50,19 @@ export const LoanCard = ({ loan }: Props) => {
 
       <div className='space-y-2 mb-6'>
         <div className='flex justify-between text-sm'>
-          <span className='text-gray-500'>Fecha prestamo:</span>
-          <span className='font-medium text-gray-900'>{formatDate(loan.loanDate)}</span>
+          <span className='text-gray-400'>Fecha prestamo:</span>
+          <span className='font-medium text-gray-200'>{formatDate(loan.loanDate)}</span>
         </div>
         <div className='flex justify-between text-sm'>
-          <span className='text-gray-500'>Fecha devolución:</span>
-          <span className={`font-medium ${loan.status === 'overdue' ? 'text-red-600' : 'text-gray-900'}`}>
+          <span className='text-gray-400'>Fecha devolución:</span>
+          <span className={`font-medium ${loan.status === 'overdue' ? 'text-red-400' : 'text-gray-200'}`}>
              {formatDate(loan.dueDate)}
           </span>
         </div>
          {loan.returnDate && (
           <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Devuelto el:</span>
-            <span className='font-medium text-gray-900'>{formatDate(loan.returnDate)}</span>
+            <span className='text-gray-400'>Devuelto el:</span>
+            <span className='font-medium text-gray-200'>{formatDate(loan.returnDate)}</span>
           </div>
         )}
       </div>
@@ -75,8 +75,8 @@ export const LoanCard = ({ loan }: Props) => {
             className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors
             ${
               isReturning
-                ? 'bg-blue-300 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+                ? 'bg-blue-900/50 cursor-not-allowed text-gray-400'
+                : 'bg-primary-600 hover:bg-primary-500 active:bg-primary-700'
             }`}>
             {isReturning ? 'Devolviendo...' : 'Devolver Libro'}
           </button>
